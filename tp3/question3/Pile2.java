@@ -9,33 +9,86 @@ public class Pile2<T> implements PileI<T>{
     /** par délégation : utilisation de la class Stack */
     private Stack<T> stk;
     /** la capacité de la pile */
-    private int capacité;
+    private int capacite;
 
     /** Création d'une pile.
      * @param taille la "taille maximale" de la pile, doit être > 0
      */
     public Pile2(int taille){
-        // à compléter
+        if (taille < 0) {
+            this.stk = (T[]) new Object[super.CAPACITE_PAR_DEFAUT];
+        } else {
+            this.stk = (T[]) new Object[taille];
+        }
+        this.capacite = 0;
+        return this;
     }
 
     public Pile2(){
-        // à compléter
+        return this;
     }
 
     public void empiler(T o) throws PilePleineException{
-        // à compléter
+        if (estPleine())
+            throw new PilePleineException();
+        stk[capacite++] = o;
     }
 
     public T depiler() throws PileVideException{
-        // à compléter
+        if (estVide())
+            throw new PileVideException();
+        T o = stack[capacite--];
+        stk[capacite + 1] = null;
+        return o;
     }
 
     public T sommet() throws PileVideException{
-        // à compléter
+        if (estVide())
+            throw new PileVideException();
+        T o = stk[capacite];
+        return o;
     }
 
-    // recopier ici toutes les autres méthodes
-    // qui ne sont pas modifiées en fonction
-    // du type des éléments de la pile
+    public int capacite() {
+        return this.stk.length;
+    }
 
+    public int taille() {
+        return this.capacite;
+    }
+
+    public boolean estVide() {
+        return this.capacite == 0;
+    }
+
+    public boolean estPleine() {
+        return this.capacite == this.stk.length;
+    }
+
+    public boolean equals(Pile2 p) {
+        if (this.stk.length != p.stk.length)
+            return false;
+        if (this.capacite != p.capacite)
+            return false;
+        for (int i = ptr; i >= 0; i++) {
+            if (!this.depiler().equals(p.depiler()))
+                return false;
+        }
+        return true;
+    }
+
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("[");
+        for (int i = capacite - 1; i >= 0; i--) {
+            sb.append(stk[i].toString());
+            if (i > 0)
+                sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 } // Pile2

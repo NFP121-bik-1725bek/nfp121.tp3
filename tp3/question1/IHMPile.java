@@ -4,6 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
+import question1.PilePleineException;
+import question1.PileVideException;
+
 public class IHMPile extends JFrame implements ActionListener{
     private JTextField donnee = new JTextField(6);
     private JTextField sommet = new JTextField(6);
@@ -36,17 +39,18 @@ public class IHMPile extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent ae){
         if(ae.getActionCommand().equals("empiler")){
-
-            // à compléter
-
-            // en cas d'exception
-            //contenu.setText( /* à compléter */"" + " estPleine !");
-
+            try {
+                p.empiler(donnee.getText());
+            } catch (PilePleineException e) {
+                contenu.setText("La pile est pleine!");
+            }
         }else{
-
-            // à compléter
-            // en cas d'exception
-            //contenu.setText( /* à compléter */"" + " estVide !");
+            try {
+                Object o = p.depiler();
+                contenu.setText(o.toString());
+            } catch (PileVideException e) {
+                contenu.setText("La pile est vide!");
+            }
         }
     }
 
